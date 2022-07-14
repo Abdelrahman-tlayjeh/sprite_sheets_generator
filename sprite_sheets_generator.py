@@ -36,8 +36,23 @@ class GeneratorHelper:
         #create transparent image
         sprite_width = frames[0].width * len(frames)
         sprite_height = frames[0].height * 2
-        sprite = image_handler.new("RGBA", (frames[0].width * len)) 
+        sprite = image_handler.new("RGBA", (sprite_width, sprite_height), (0, 0, 0, 0)) 
 
-
-
-
+        #add first row
+        x = 0
+        y = 0
+        for i in range(len(frames)):
+            current_frame = frames[i]
+            sprite.paste(current_frame, (x, y))
+            x += current_frame.width
+        
+        #add second row (transpose)
+        x = 0
+        y = frames[0].height
+        for i in range(len(frames)):
+            current_frame = frames[i].transpose(image_handler.FLIP_LEFT_RIGHT)
+            sprite.paste(current_frame, (x, y))
+            x += current_frame.width
+        
+        #finish
+        return sprite
